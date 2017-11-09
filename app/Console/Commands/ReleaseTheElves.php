@@ -13,7 +13,7 @@ class ReleaseTheElves extends Command
      *
      * @var string
      */
-    protected $signature = 'send-secrets';
+    protected $signature = 'i-am-santa';
 
     /**
      * The console command description.
