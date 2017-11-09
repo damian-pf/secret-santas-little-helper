@@ -2,7 +2,9 @@
 
 namespace App\Console\Commands;
 
+use App\Mail\SendGifteeName;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Mail;
 
 class ReleaseTheElves extends Command
 {
@@ -61,6 +63,15 @@ class ReleaseTheElves extends Command
         dd($this->matchedPeople);
 
         // go through matches and send sms or email
+        foreach ($this->matchedPeople as $sender => $receiver) {
+            $senderInfo = $people[$sender];
+
+            if (empty($senderInfo['email']) === false) {
+                Mail::to($senderInfo['email'])->send(new SendGifteeName($receiver));
+            } elseif (empty($senderInfo['phone']) === false) {
+                app('twilio')->message($senderInfo['phone'], sprintf('Hi there, you have been matched with %s for secret santa this year. Happy gift hunting!', $receiver));
+            }
+        }
     }
 
     /**
