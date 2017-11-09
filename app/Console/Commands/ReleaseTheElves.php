@@ -56,10 +56,13 @@ class ReleaseTheElves extends Command
 
             if (empty($senderInfo['email']) === false) {
                 Mail::to($senderInfo['email'])->send(new SendGifteeName($receiver));
+                $this->info(sprintf('Sent email to %s', $sender));
             } elseif (empty($senderInfo['phone']) === false) {
-                app('twilio')->message($senderInfo['phone'], sprintf('Hi there, you have been matched with %s for secret santa this year. Happy gift hunting!', $receiver));
+                app('twilio')->message($senderInfo['phone'], sprintf('Hi there, you have been matched with %s for Secret Santa this year. Happy gift hunting! 🎁', $receiver));
+                $this->info(sprintf('Sent SMS to %s', $sender));
             }
         }
+        $this->info('Operation Secret Santa Complete 🎅');
     }
 
     /**
